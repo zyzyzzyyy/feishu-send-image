@@ -1,0 +1,14 @@
+name: feishu-send-image
+version: 1.0.0
+description: 将本地图片发送到飞书聊天的技能
+author: codingyuan
+platforms:
+  - feishu
+tools:
+  - message
+triggers:
+  - 发送图片
+  - 发一下图片
+  - 原样发回
+  - send image
+  - 发送截图
