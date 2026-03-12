@@ -13,8 +13,18 @@ triggers:
   - send image
   - 发送截图
   - 转发图片
+keywords:
+  - 图片
+  - 飞书
+  - 发送
+  - 截图
+  - image
+  - feishu
+  - send
 useWhen: 用户需要发送图片到飞书聊天、转发用户图片、发送浏览器截图或分享本地文件时使用
 examples:
   - "把这张图片发给我"
   - "帮我截个图并发给我"
   - "发送 /path/to/image.png 给我"
+  - "send this image"
+  - "forward the picture"
