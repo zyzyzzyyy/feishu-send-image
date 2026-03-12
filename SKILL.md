@@ -1,6 +1,6 @@
 ---
 name: feishu-send-image
-description: 将本地图片发送到飞书聊天的技能，支持原样发回用户图片、浏览器截图和本地文件。
+description: 将本地图片发送到飞书聊天的技能，支持原样发回用户图片、浏览器截图和本地文件。Use when the user wants to send images to Feishu chat, forward user images, send browser screenshots, or share local image files. Trigger on phrases like "发送图片", "发一下图片", "send image", "原样发回".
 ---
 
 # 🦞 飞书图片消息处理技能
