@@ -15,7 +15,7 @@
 ### 本地安装
 ```bash
 # 克隆到此目录
-npx skills add <your-github-username>/feishu-send-image
+npx skills add https://github.com/zyzyzzyyy/feishu-send-image
 ```
 
 ### 通过 OpenClaw
