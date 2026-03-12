@@ -1,1 +1,65 @@
-# Feishu Send Image Skill 🖼️ An OpenClaw skill for sending local images to Feishu chat. ## Features - ✅ Send back user images - ✅ Send browser screenshots - ✅ Send local image files - ✅ Support multiple formats (JPG/PNG/GIF/WEBP) - ✅ Auto-detect MIME types ## Installation ```bash npx skills add https://github.com/zyzyzzyyy/feishu-send-image ``` ## Usage Examples ### Example 1: Send Image ``` User: Send this image to me Action: message send -> send image ``` ### Example 2: Browser Screenshot ``` User: Take a screenshot for me Action: browser screenshot -> message send ``` ## Trigger Words - "发送图片" (Send image) - "发一下图片" (Send the image) - "原样发回" (Send back as is) - "send image" - "发送截图" (Send screenshot) ## File Structure ``` feishu-send-image/ ├── SKILL.md # Skill definition ├── README.md # Chinese version ├── README_EN.md # This file (English) ├── LICENSE # MIT License └── skill.yaml # Skill configuration ``` ## Dependencies - OpenClaw Message Tool - Feishu Channel Configuration ## Version 1.0.0 - Initial release ## License MIT License - See [LICENSE](LICENSE) for details.
+# Feishu Send Image Skill
+
+🖼️ An OpenClaw skill for sending local images to Feishu chat.
+
+## Features
+
+- ✅ Send back user images
+- ✅ Send browser screenshots
+- ✅ Send local image files
+- ✅ Support multiple formats (JPG/PNG/GIF/WEBP)
+- ✅ Auto-detect MIME types
+
+## Installation
+
+```bash
+npx skills add https://github.com/zyzyzzyyy/feishu-send-image
+```
+
+## Usage Examples
+
+### Example 1: Send Image
+
+```
+User: Send this image to me
+Action: message send -> send image
+```
+
+### Example 2: Browser Screenshot
+
+```
+User: Take a screenshot for me
+Action: browser screenshot -> message send
+```
+
+## Trigger Words
+
+- "发送图片" (Send image)
+- "发一下图片" (Send the image)
+- "原样发回" (Send back as is)
+- "send image"
+- "发送截图" (Send screenshot)
+
+## File Structure
+
+```
+feishu-send-image/
+├── SKILL.md # Skill definition
+├── README.md # Chinese version
+├── README_EN.md # This file (English)
+├── LICENSE # MIT License
+└── skill.yaml # Skill configuration
+```
+
+## Dependencies
+
+- OpenClaw Message Tool
+- Feishu Channel Configuration
+
+## Version
+
+1.0.0 - Initial release
+
+## License
+
+MIT License - See [LICENSE](LICENSE) for details.

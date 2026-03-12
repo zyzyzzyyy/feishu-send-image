@@ -1,6 +1,6 @@
-# Feishu Send Image Skill 🖼️
+# Feishu Send Image Skill
 
-将本地图片发送到飞书聊天的 OpenClaw 技能。
+🖼️ 将本地图片发送到飞书聊天的 OpenClaw 技能。
 
 ## 功能特性
 
@@ -12,24 +12,21 @@
 
 ## 安装方法
 
-### 本地安装
 ```bash
-# 克隆到此目录
 npx skills add https://github.com/zyzyzzyyy/feishu-send-image
 ```
-
-### 通过 OpenClaw
-技能已内置在 `~/.openclaw/skills/feishu-send-image/`
 
 ## 使用示例
 
 ### 示例 1：发送图片
+
 ```
 用户：把这张图片发给我
 执行：message send -> 发送图片
 ```
 
 ### 示例 2：浏览器截图
+
 ```
 用户：帮我截个图
 执行：browser screenshot -> message send
@@ -47,9 +44,9 @@ npx skills add https://github.com/zyzyzzyyy/feishu-send-image
 
 ```
 feishu-send-image/
-├── SKILL.md      # 技能定义文件
-├── README.md     # 本文件
-└── skill.yaml    # 技能配置
+├── SKILL.md # 技能定义文件
+├── README.md # 本文件
+└── skill.yaml # 技能配置
 ```
 
 ## 依赖
