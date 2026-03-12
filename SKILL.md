@@ -1,8 +1,15 @@
+---
+name: feishu-send-image
+description: 将本地图片发送到飞书聊天的技能，支持原样发回用户图片、浏览器截图和本地文件。
+---
+
 # 🦞 飞书图片消息处理技能
 
 > **适用范围**：OpenClaw 平台 + 飞书（Feishu/Lark）渠道  
 > **核心能力**：将用户发送的图片原样发回，或将浏览器截图发送给用户  
 > **重要限制**：当前模型无法直接查看图片内容，需要用户口头描述
+
+---
 
 ## 📌 触发场景
 
@@ -20,6 +27,8 @@
 - "原样发回"
 - "发一下图片"
 - "截图给我看"
+
+---
 
 ## 📥 步骤 1：获取图片路径
 
@@ -45,6 +54,8 @@ MEDIA:~/.openclaw/media/browser/xxx.png
 ### 场景 C：本地图片文件
 
 使用绝对路径：`/path/to/your/image.png`
+
+---
 
 ## 📤 步骤 2：发送图片
 
@@ -76,6 +87,8 @@ MEDIA:~/.openclaw/media/browser/xxx.png
 | `.gif` | `image/gif` |
 | `.webp` | `image/webp` |
 | `.bmp` | `image/bmp` |
+
+---
 
 ## ✅ 完整示例
 
@@ -128,6 +141,8 @@ MEDIA:~/.openclaw/media/browser/xxx.png
 }
 ```
 
+---
+
 ## ❌ 常见错误与解决方案
 
 | 错误 | 正确做法 |
@@ -137,6 +152,8 @@ MEDIA:~/.openclaw/media/browser/xxx.png
 | `mimeType: "image/png"`（jpg 文件） | 根据实际类型选择 |
 | 添加 `target` 参数 | 省略，自动回复当前会话 |
 | 用 `read` 工具"查看"图片 | `read` 只能读元数据，模型看不到内容 |
+
+---
 
 ## 🎯 成功关键
 
@@ -148,11 +165,15 @@ MEDIA:~/.openclaw/media/browser/xxx.png
 - ✅ 不填 `target` 参数
 - ❌ 模型无法查看图片内容
 
+---
+
 ## 📁 文件路径
 
 - **用户发送的图片**：`~/.openclaw/media/inbound/<UUID>.jpg`
 - **浏览器截图**：`~/.openclaw/media/browser/<UUID>.png`
 - **本地图片**：用户工作区路径
+
+---
 
 ## 📚 依赖
 
