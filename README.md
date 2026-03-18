@@ -89,10 +89,9 @@ feishu-send-image/
 
 ### Q: 哪些目录是允许的？
 
-**A**: OpenClaw 允许的媒体目录包括：
+**A**: OpenClaw 允许的媒体目录通常包括：
 - `~/.openclaw/media/inbound/` — 用户发送的图片
 - `~/.openclaw/media/browser/` — 浏览器截图
-- `~/.openclaw/media/outbound/` — 输出图片（需手动创建）
 - 工作区目录
 
 **注意**：不在允许目录内的路径（如 `/tmp/`、`~/Downloads/`）会导致发送失败。
