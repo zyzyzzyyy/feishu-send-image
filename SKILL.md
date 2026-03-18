@@ -1,123 +1,222 @@
-# Feishu Send Image Skill 🖼️
+---
+name: feishu-send-image
+description: 将本地图片发送到飞书聊天的技能，支持原样发回用户图片、浏览器截图和本地文件。
+---
 
-## Description
-将本地图片发送到飞书聊天。**注意：浏览器截图由 browser-screenshot skill 负责，会自动发送，不需要调用此 skill。**
+# 🦞 飞书图片消息处理技能
 
-## Activation
-当用户提到以下关键词时触发：
+> **适用范围**：OpenClaw 平台 + 飞书（Feishu/Lark）渠道  
+> **核心能力**：将用户发送的图片原样发回，或将浏览器截图发送给用户  
+> **重要限制**：当前模型无法直接查看图片内容，需要用户口头描述
+
+---
+
+## 📌 触发场景
+
+当用户表达以下意图时触发此技能：
+
+- "发送图片"、"发一下图片"、"把图片发给我"
+- "原样发回"、"转发图片"
+- 用户发送图片后需要确认
+- 需要发送浏览器截图
+- 需要发送本地图片文件
+
+**触发词示例**：
 - "发送图片"
-- "发一下图片"
-- "把图片发给我"
-- "原样发回"
 - "send image"
-- "图片发过来"
-- 用户发送图片后需要确认时
+- "原样发回"
+- "发一下图片"
+- "截图给我看"
 
-## ⚠️ 重要说明
+---
 
-**feishu-send-image 不处理 OpenClaw browser 工具的截图！**
+## 📥 步骤 1：获取图片路径
 
-- ❌ browser screenshot 的截图 → 由 **browser-screenshot skill** 负责（会自动发送）
-- ✅ 本地图片文件（如 `~/workspace/images/xxx.png`）→ 使用 **feishu-send-image**
-- ✅ 用户发送的图片 → 使用 **feishu-send-image**
+### 场景 A：用户刚发送的图片
 
+系统会在对话上下文中提示：
 ```
-❌ 错误：browser-screenshot + feishu-send-image → 发送两次
-✅ 正确：browser-screenshot → 自动发送
-✅ 正确：feishu-send-image → 发送本地图片/用户图片
+[media attached: ~/.openclaw/media/inbound/xxx.jpg]
 ```
 
-## Workflow
-
-### 步骤 0: 判断发送场景
-
-根据用户需求选择合适的 skill：
-
-| 用户需求 | 使用 Skill |
-|---------|-----------|
-| 浏览器截图、网页截图 | **browser-screenshot**（会自动发送） |
-| 发送本地图片文件 | **feishu-send-image** |
-| 发回用户发送的图片 | **feishu-send-image** |
-
-### 步骤 1: 获取图片路径
-
-#### 场景 A: 用户刚发送的图片
-从系统元数据获取：
-```
-[media attached: ~/.openclaw/media/inbound/36b70131-a3c2-4a22-99a0-1126fd78f48b.jpg]
-```
-
-或从目录查找最新图片：
+或者命令行查找最新图片：
 ```bash
 ls -lt ~/.openclaw/media/inbound/ | head -3
 ```
 
-#### 场景 B: 本地图片文件
-使用绝对路径：
+### 场景 B：浏览器截图
+
+截图后返回结果：
 ```
-~/workspace/images/xxx.png
+MEDIA:~/.openclaw/media/browser/xxx.png
 ```
 
-### 步骤 2: 确定 MIME 类型
+### 场景 C：本地图片文件
 
-| 文件扩展名 | MIME 类型 |
-|-----------|----------|
-| .jpg / .jpeg | image/jpeg |
-| .png | image/png |
-| .gif | image/gif |
-| .webp | image/webp |
+使用绝对路径：`/path/to/your/image.png`
 
-### 步骤 3: 发送图片
+---
+
+## 📤 步骤 2：发送图片
+
+### 核心公式
+
 ```json
 {
   "action": "send",
-  "media": "<图片绝对路径>",
-  "mimeType": "<MIME 类型>"
+  "media": "~/.openclaw/media/inbound/xxx.jpg",
+  "mimeType": "image/jpeg"
 }
 ```
 
-## Common Patterns
+### 参数说明
 
-### 发回用户发送的图片
+| 参数 | 必填 | 说明 | 示例 |
+|------|------|------|------|
+| `action` | ✅ | 固定为 `"send"` | `"send"` |
+| `media` | ✅ | 图片**本地绝对路径** | `"~/.openclaw/media/inbound/xxx.jpg"` |
+| `mimeType` | ✅ | MIME 类型 | `"image/jpeg"` 或 `"image/png"` |
+| `target` | ❌ | 省略（自动回复当前会话） | 不填 |
+
+### MIME 类型对照表
+
+| 文件扩展名 | MIME 类型 |
+|-----------|----------|
+| `.jpg` / `.jpeg` | `image/jpeg` |
+| `.png` | `image/png` |
+| `.gif` | `image/gif` |
+| `.webp` | `image/webp` |
+| `.bmp` | `image/bmp` |
+
+---
+
+## ✅ 完整示例
+
+### 示例 1：发回用户图片
+
+**场景**：用户发图问"这是什么？"
+
+**操作**：
+1. 从系统提示中复制图片路径
+2. 调用 `message` 工具：
+```json
+{
+  "action": "send",
+  "media": "~/.openclaw/media/inbound/xxx.jpg",
+  "mimeType": "image/jpeg"
+}
 ```
-用户发送了一张图片
-
-执行:
-1. 从 metadata 获取图片路径
-2. feishu-send-image -> 发回给用户
+3. 发送文字说明：
+```
+图片已发回！但我现在看不到图片内容，需要你描述一下图片里是什么，我才能帮你分析～ 👀
 ```
 
-### 发送本地图片
+### 示例 2：发送浏览器截图
+
+**步骤 1：打开网页**
+```json
+{
+  "action": "navigate",
+  "target": "host",
+  "url": "https://www.baidu.com"
+}
 ```
-用户：把这个文件发给我 ~/documents/screenshot.png
 
-执行:
-1. feishu-send-image -> 发送本地文件
+**步骤 2：截图**
+```json
+{
+  "action": "screenshot",
+  "target": "host",
+  "type": "png"
+}
+```
+返回结果：`MEDIA:~/.openclaw/media/browser/xxx.png`
+
+**步骤 3：发送截图**
+```json
+{
+  "action": "send",
+  "media": "~/.openclaw/media/browser/xxx.png",
+  "mimeType": "image/png"
+}
 ```
 
-## Error Handling
+---
 
-### 错误 1: 路径不存在
-**现象**: 发送失败  
-**解决**: 检查文件路径是否正确，使用绝对路径
+## ❌ 常见错误与解决方案
 
-### 错误 2: MIME 类型错误
-**现象**: 图片无法显示  
-**解决**: 根据文件类型选择正确的 MIME 类型
+| 错误 | 原因 | 正确做法 |
+|------|------|---------|
+| `LocalMediaAccessError: path is not under an allowed directory` | 图片路径不在允许目录内 | 使用 `~/.openclaw/media/outbound/` 或其他允许的目录 |
+| `media: "./image.jpg"`（相对路径） | 路径不是绝对路径 | 必须用绝对路径 |
+| `media: "~/workspace/..."` | ~ 没有展开 | 必须展开为完整路径 |
+| `mimeType: "image/png"`（jpg 文件） | MIME 类型错误 | 根据实际类型选择 |
+| 添加 `target` 参数 | 不需要 | 省略，自动回复当前会话 |
 
-### 错误 3: 重复发送
-**现象**: 同一张图片发了两次  
-**解决**: 
-- 如果是浏览器截图 → 只用 browser-screenshot，不要用 feishu-send-image
-- 检查是否已经通过 MEDIA: 引用发送过
+---
 
-## Tips
-- ✅ 浏览器截图用 browser-screenshot（会自动发送）
-- ✅ 本地图片用 feishu-send-image
+## ⚠️ 重要：路径必须在允许目录内
+
+飞书发送图片时，**图片路径必须在 OpenClaw 允许的媒体目录内**。不在允许目录会导致发送失败。
+
+### 允许的目录
+
+默认允许的目录包括：
+- `~/.openclaw/media/inbound/` — 用户发送的图片
+- `~/.openclaw/media/browser/` — 浏览器截图
+- `~/.openclaw/media/outbound/` — 输出图片（需手动创建）
+- 工作区目录
+
+**不在允许列表的路径**（❌ 会失败）：
+- `/tmp/`
+- `/home/zy/Downloads/`
+- 其他非媒体目录
+
+### 解决方案
+
+如果图片在其他位置，先复制到允许目录：
+
+```bash
+# 创建 outbound 目录（如果不存在）
+mkdir -p ~/.openclaw/media/outbound
+
+# 复制图片
+cp /path/to/your/image.jpg ~/.openclaw/media/outbound/
+
+# 然后使用新路径发送
+# media: "/home/zy/.openclaw/media/outbound/image.jpg"
+```
+
+---
+
+## 🎯 成功关键
+
+**一句话总结**：用户发图 → 保存本地 → `message` + 绝对路径 + MIME 类型 → 发回
+
+**关键点**：
 - ✅ 使用绝对路径
-- ✅ 根据文件类型选择正确的 MIME
-- ❌ 不要用 feishu-send-image 发送浏览器截图
-- ❌ 不要在调用 browser-screenshot 后再调用 feishu-send-image
+- ✅ 正确 MIME 类型
+- ✅ 不填 `target` 参数
+- ❌ 模型无法查看图片内容
 
-## Version
-- 2.0.0 - 明确区分 browser-screenshot 和 feishu-send-image 的职责
+---
+
+## 📁 文件路径
+
+- **用户发送的图片**：`~/.openclaw/media/inbound/<UUID>.jpg`
+- **浏览器截图**：`~/.openclaw/media/browser/<UUID>.png`
+- **本地图片**：用户工作区路径
+
+---
+
+## 📚 依赖
+
+- OpenClaw Message 工具
+- 飞书渠道配置
+- 有效的图片文件
+
+---
+
+*版本：1.0.0*  
+*最后更新：2026-03-12*  
+*基于原始学习文件重写*
